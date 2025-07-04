@@ -28,7 +28,7 @@ export async function updateTodo(id: string, text: string) {
     data: { text },
   });
   revalidatePath('/todo');
-
+}
 export async function toggleTodo(id: string, completed: boolean) {
   await prisma.todo.update({
     where: { id },
@@ -48,8 +48,6 @@ export async function reorderTodos(todos: { id: string; order: number }[]) {
   revalidatePath('/todo');
 }
 
-
-}
 
 export async function deleteTodo(id: string) {
   await prisma.todo.delete({
