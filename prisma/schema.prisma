@@ -3,6 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
 }
 
 datasource db {
@@ -29,4 +30,5 @@ enum Priority {
   MEDIUM
   HIGH
 }
+
 

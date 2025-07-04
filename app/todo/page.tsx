@@ -1,5 +1,8 @@
+import { createTodo } from './actions';
+import { TodoList } from './TodoList';
 import prisma from '@/lib/prisma';
-import { revalidatePath } from 'next/cache';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 
 export default async function TodoPage() {
   const todos = await prisma.todo.findMany({
@@ -8,40 +11,14 @@ export default async function TodoPage() {
     },
   });
 
-  async function createTodo(formData: FormData) {
-    'use server';
-    const text = formData.get('text') as string;
-    const todos = await prisma.todo.findMany({});
-    await prisma.todo.create({
-      data: {
-        text,
-        order: todos.length,
-      },
-    });
-    revalidatePath('/todo');
-  }
-
   return (
-    <div className="container mx-auto max-w-2xl py-12">
-      <h1 className="text-4xl font-bold mb-8">Modern Todo App</h1>
-      <form action={createTodo} className="flex gap-4 mb-8">
-        <input
-          type="text"
-          name="text"
-          className="flex-grow p-2 border rounded"
-          placeholder="Add a new task..."
-        />
-        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
-          Add
-        </button>
+    <div className="container mx-auto max-w-2xl py-10">
+      <h1 className="text-3xl font-bold mb-6">My Todos</h1>
+      <form action={createTodo} className="flex gap-2 mb-6">
+        <Input name="text" placeholder="Add a new task..." />
+        <Button type="submit">Add</Button>
       </form>
-      <ul>
-        {todos.map((todo) => (
-          <li key={todo.id} className="flex items-center gap-4 p-2 border-b">
-            <span className="flex-grow">{todo.text}</span>
-          </li>
-        ))}
-      </ul>
+      <TodoList initialTodos={todos} />
     </div>
   );
 }
