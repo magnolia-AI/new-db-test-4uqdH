@@ -22,7 +22,7 @@ export function TodoList({ initialTodos }: TodoListProps) {
     setTodos(initialTodos);
   }, [initialTodos]);
 
-  const onDragEnd = (result: DropResult) => {
+  const onDragEnd = async (result: DropResult) => {
     if (!result.destination) {
       return;
     }
@@ -37,7 +37,7 @@ export function TodoList({ initialTodos }: TodoListProps) {
     }));
 
     setTodos(updatedTodos);
-    reorderTodos(updatedTodos.map(({ id, order }) => ({ id, order })));
+        await reorderTodos(updatedTodos.map(({ id, order }) => ({ id, order })));
   };
 
   return (
@@ -69,4 +69,6 @@ export function TodoList({ initialTodos }: TodoListProps) {
     </DragDropContext>
   );
 }
+
+
 
